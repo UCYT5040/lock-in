@@ -44,6 +44,7 @@
 		"vite": "^7.1.7"
 	},
 	"dependencies": {
-		"@steeze-ui/svelte-icon": "^1.6.2"
+		"@steeze-ui/svelte-icon": "^1.6.2",
+		"node-appwrite": "^20.2.1"
 	}
 }

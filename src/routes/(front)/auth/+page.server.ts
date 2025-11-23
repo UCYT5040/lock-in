@@ -84,13 +84,14 @@ export const actions = {
 			});
 		}
 
-		// Create a user row in the database with the DOB. Do not await: even if this fails, the user can still log in (TODO: ensure users have DOB set in a hook)
+		// Create a user row in the database with the DOB/name. Do not await: even if this fails, the user can still log in (TODO: ensure users have DOB/name set in a hook)
 		(async () => {
 			try {
 				await createRow({
 					tableId: appwriteConfig.databases.main.tables.users,
 					data: {
-						dateOfBirth: dateOfBirth
+						birthDate: dateOfBirth,
+						name: name
 					},
 					rowId: user.$id
 				});

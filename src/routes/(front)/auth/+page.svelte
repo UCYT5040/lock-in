@@ -5,7 +5,7 @@
 	let {form} = $props();
 
 	type FormAction = 'login' | 'register';
-	let action: FormAction = $state(form?.action as FormAction || 'login');
+	let action: FormAction = $derived(form?.action as FormAction || 'login');
 
 	// Registration form state
 	let password = $state('');

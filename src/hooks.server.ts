@@ -48,7 +48,8 @@ export async function handle({ event, resolve }) {
 			data: userData,
 			admin: user.labels.includes('admin'),
 			name: user.name,
-			id: user.$id
+			id: user.$id,
+			valid: false // (set below)
 		};
 		event.locals.user.valid = event.locals.user.approved && !event.locals.user.fraudulent;
 	} catch (e) {

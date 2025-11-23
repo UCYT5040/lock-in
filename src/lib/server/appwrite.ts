@@ -1,24 +1,18 @@
 import { Client } from 'node-appwrite';
-import {
-    PUBLIC_APPWRITE_ENDPOINT,
-    PUBLIC_APPWRITE_PROJECT_ID
-} from '$env/static/public';
-import { APPWRITE_API_KEY } from '$env/static/private';
+import { appwriteConfig } from './appwriteConfig';
 
 export const serverClient = new Client()
-    .setEndpoint(PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(PUBLIC_APPWRITE_PROJECT_ID)
-    .setKey(APPWRITE_API_KEY);
+	.setEndpoint(appwriteConfig.endpoint)
+	.setProject(appwriteConfig.projectId)
+	.setKey(appwriteConfig.apiKey);
 
 export function getUserClient(session: string) {
-    return new Client()
-        .setEndpoint(PUBLIC_APPWRITE_ENDPOINT)
-        .setProject(PUBLIC_APPWRITE_PROJECT_ID)
-        .setSession(session);
+	return new Client()
+		.setEndpoint(appwriteConfig.endpoint)
+		.setProject(appwriteConfig.projectId)
+		.setSession(session);
 }
 
 export function createUserClient() {
-    return new Client()
-        .setEndpoint(PUBLIC_APPWRITE_ENDPOINT)
-        .setProject(PUBLIC_APPWRITE_PROJECT_ID);
+	return new Client().setEndpoint(appwriteConfig.endpoint).setProject(appwriteConfig.projectId);
 }

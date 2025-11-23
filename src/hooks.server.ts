@@ -1,12 +1,14 @@
 import { createUserClient } from '$lib/server/appwrite';
+import { appwriteConfig } from '$lib/server/appwriteConfig';
+import { createRow, getRow } from '$lib/server/database';
 import { Account, AppwriteException } from 'node-appwrite';
+import type { User, FraudStatus } from '$lib/types/appwrite.d.ts';
 
 // Does not apply to subpaths
 const noAuthPaths = ['/', '/auth'];
 
 // Applies to subpaths (for example, /admin/settings)
 const adminPaths = ['/admin']; // Must have admin label
-const lessonDesignerPaths = ['/lab']; // Must have lesson-designer label
 
 export async function handle({ event, resolve }) {
 	try {
@@ -14,14 +16,41 @@ export async function handle({ event, resolve }) {
 		client.setSession(event.cookies.get('session') || '');
 		const account = new Account(client);
 		const user = await account.get();
+		let userData: User;
+		try {
+			userData = await getRow({
+				tableId: appwriteConfig.databases.main.tables.users,
+				rowId: user.$id
+			}) as unknown as User;
+		} catch (e) {
+			if (e instanceof AppwriteException && e.type == 'row_not_found') {
+				// Create the missing user row
+				try {
+					userData = await createRow({
+						tableId: appwriteConfig.databases.main.tables.users,
+						data: {
+							approved: false // Appwrite requires at least some data to be set. Other values will use defaults
+						},
+						rowId: user.$id
+					}) as unknown as User;
+				} catch (createError) {
+					console.error('Error creating user row for new user:', createError);
+					throw createError;
+				}
+			} else {
+				console.error('Unexpected error fetching user row:', e);
+				throw e;
+			}
+		}
 		event.locals.user = {
-			approved: user.labels.includes('approved'),
-			denied: user.labels.includes('denied'),
-			lessonDesigner: user.labels.includes('lesson-designer'),
+			approved: userData.approved,
+			fraudulent: userData.fraudStatus === "confirmed" as FraudStatus,
+			data: userData,
 			admin: user.labels.includes('admin'),
 			name: user.name,
 			id: user.$id
 		};
+		event.locals.user.valid = event.locals.user.approved && !event.locals.user.fraudulent;
 	} catch (e) {
 		if (!(e instanceof AppwriteException && e.type == 'general_unauthorized_scope')) {
 			console.error('Unexpected error fetching user account:', e);
@@ -29,16 +58,15 @@ export async function handle({ event, resolve }) {
 		event.locals.user = undefined;
 	}
 
-	// For users with the denied label, redirect to '/denied'
-	if (event.url.pathname == '/denied') {
-		if (!event.locals.user?.denied) {
-			return Response.redirect(new URL('/', event.url), 303);
-		}
-	} else {
-		if (event.locals.user?.denied) {
-			return Response.redirect(new URL('/denied', event.url), 303);
+	// For users that have been marked as fraudulent, send to '/fraud'
+	if (event.locals.user?.fraudulent) {
+		if (event.url.pathname != '/fraud') {
+			return Response.redirect(new URL('/fraud', event.url), 303);
+		} else {
+			return resolve(event);
 		}
 	}
+	
 
 	// For users without the approved label, redirect to '/approval'
 	if (event.url.pathname == '/approval') {
@@ -66,13 +94,6 @@ export async function handle({ event, resolve }) {
 	// If the path is in adminPaths, require admin label
 	if (adminPaths.some((path) => event.url.pathname.startsWith(path))) {
 		if (!event.locals.user?.admin) {
-			return new Response('Forbidden', { status: 403 });
-		}
-	}
-
-	// If the path is in lessonDesignerPaths, require lesson-designer label
-	if (lessonDesignerPaths.some((path) => event.url.pathname.startsWith(path))) {
-		if (!event.locals.user?.lessonDesigner) {
 			return new Response('Forbidden', { status: 403 });
 		}
 	}

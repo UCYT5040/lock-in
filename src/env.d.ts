@@ -1,3 +1,4 @@
+import type { User } from '$lib/types/appwrite';
 import type { Models } from 'node-appwrite';
 
 declare global {
@@ -6,12 +7,13 @@ declare global {
 			user:
 				| {
 						approved: boolean;
-						denied: boolean;
-						lessonDesigner: boolean;
+						fraudulent: boolean;
+						data: User;
 						admin: boolean;
 						name: string;
 						id: string;
-				  }
+						valid: boolean;
+			    }
 				| undefined;
 		}
 	}

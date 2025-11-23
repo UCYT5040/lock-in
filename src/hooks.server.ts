@@ -87,9 +87,9 @@ export async function handle({ event, resolve }) {
 		}
 	}
 
-	// If the user is authenticated and on '/auth', redirect to '/'
+	// If the user is authenticated and on '/auth', redirect to '/dashboard'
 	if (event.url.pathname == '/auth' && event.locals.user) {
-		return Response.redirect(new URL('/', event.url), 303);
+		return Response.redirect(new URL('/dashboard', event.url), 303);
 	}
 
 	// If the path is in adminPaths, require admin label

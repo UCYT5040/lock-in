@@ -97,11 +97,15 @@
 									Supporting Documents
 								</h3>
 								<div class="flex flex-wrap gap-2">
-									<!-- TODO: Use icon over emoji, allow downloading/viewing -->
-									{#each report.documents as docId}
-										<span class="rounded bg-indigo-600/30 px-3 py-1 text-sm text-indigo-300">
+									<!-- TODO: Use icon over emoji -->
+									{#each report.documents as docId, index}
+										<a
+											href="/api/v1/volunteerReport/{report.$id}/attachment/{index}"
+											target="_blank"
+											class="rounded bg-indigo-600/30 px-3 py-1 text-sm text-indigo-300 hover:bg-indigo-600/50"
+										>
 											📎 Document
-										</span>
+										</a>
 									{/each}
 								</div>
 							</div>

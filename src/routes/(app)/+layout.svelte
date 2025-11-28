@@ -8,7 +8,9 @@
 		<AppBar.Lead>
 		</AppBar.Lead>
 		<AppBar.Headline>
-			<img src={icon} alt="Lock In" class="h-10 w-auto invert" />
+			<a href="/dashboard">
+				<img src={icon} alt="Lock In" class="h-10 w-auto invert" />
+			</a>	
 		</AppBar.Headline>
 		<AppBar.Trail>
 			

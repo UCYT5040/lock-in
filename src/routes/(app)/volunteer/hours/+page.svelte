@@ -40,7 +40,11 @@
 						<div class="mb-4 flex items-start justify-between">
 							<div class="flex-1">
 								<div class="mb-2 flex items-center gap-3">
-									<span class="text-2xl font-bold text-primary-300">{report.totalHours}h</span>
+									<span
+										class="text-2xl font-bold {report.reviewStatus === ReviewStatus.CANCELED
+											? 'text-gray-500 line-through'
+											: 'text-primary-300'}">{report.totalHours}h</span
+									>
 									{#if report.reviewStatus === ReviewStatus.APPROVED}
 										<span
 											class="rounded-full bg-success-500/20 px-3 py-1 text-sm font-semibold text-success-300"

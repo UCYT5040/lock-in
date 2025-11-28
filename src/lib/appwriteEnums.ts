@@ -21,5 +21,6 @@ export enum Priority {
 export enum ReviewStatus {
     APPROVED = "approved",
     DENIED = "denied",
-    UNDER_REVIEW = "under-review"
+    UNDER_REVIEW = "under-review",
+    CANCELED = "canceled"
 }

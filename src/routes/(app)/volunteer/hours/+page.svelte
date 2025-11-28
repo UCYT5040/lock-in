@@ -53,6 +53,12 @@
 										>
 											Denied
 										</span>
+									{:else if report.reviewStatus === ReviewStatus.CANCELED}
+										<span
+											class="rounded-full bg-gray-500/20 px-3 py-1 text-sm font-semibold text-gray-300"
+										>
+											Canceled
+										</span>
 									{:else}
 										<span
 											class="rounded-full bg-warning-500/20 px-3 py-1 text-sm font-semibold text-warning-300"
@@ -82,6 +88,17 @@
 									</p>
 								{/if}
 							</div>
+							{#if report.reviewStatus === ReviewStatus.UNDER_REVIEW}
+								<form method="POST" action="?/cancelReport" class="ml-4">
+									<input type="hidden" name="reportId" value={report.$id} />
+									<button
+										type="submit"
+										class="rounded-md bg-error-500/20 px-3 py-1 text-sm font-semibold text-error-300 transition-colors hover:bg-error-500/30"
+									>
+										Cancel
+									</button>
+								</form>
+							{/if}
 						</div>
 
 						<div class="mb-3">

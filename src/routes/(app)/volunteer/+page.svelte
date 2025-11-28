@@ -4,14 +4,14 @@
 </script>
 
 <div class="px-8">
-	<h1 class="preset-typo-headline mb-8">Dashboard</h1>
+	<h1 class="preset-typo-headline mb-8">Volunteer Dashboard</h1>
 
 	<DashboardGrid>
 		<DashboardCard
-			title="Volunteer"
-			description="Find and sign up for volunteer opportunities."
-			linkText="Volunteer Opportunities"
-			linkHref="/volunteer"
+			title="Volunteer Hours"
+			description="Track and manage your volunteer hours."
+			linkText="View Hours"
+			linkHref="/volunteer/hours"
 		/>
 	</DashboardGrid>
 </div>

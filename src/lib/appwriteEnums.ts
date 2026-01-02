@@ -24,3 +24,26 @@ export enum ReviewStatus {
     UNDER_REVIEW = "under-review",
     CANCELED = "canceled"
 }
+
+export enum Role {
+    STUDENT = "student",
+    EDUCATOR = "educator",
+    PARENT = "parent",
+    OTHER = "other"
+}
+
+export enum Classes {
+    REMEDIAL = "remedial",
+    REGULAR = "regular",
+    HONORS = "honors"
+}
+
+/* Enum cannot have numeric keys, yet Appwrite generates them this way... so we comment this out for now.
+export enum GradYear {
+    2027 = "2027",
+    2028 = "2028",
+    2029 = "2029",
+    2030 = "2030",
+    OTHER = "other"
+}
+*/

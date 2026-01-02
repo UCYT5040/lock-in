@@ -1,0 +1,421 @@
+{
+    "projectId": "68fe5008002cfe4a2067",
+    "endpoint": "https://nyc.cloud.appwrite.io/v1",
+    "projectName": "Lock In",
+    "settings": {
+        "services": {
+            "account": true,
+            "avatars": true,
+            "databases": true,
+            "locale": true,
+            "health": true,
+            "storage": true,
+            "teams": true,
+            "users": true,
+            "sites": true,
+            "functions": true,
+            "graphql": true,
+            "messaging": true
+        },
+        "auth": {
+            "methods": {
+                "jwt": true,
+                "phone": true,
+                "invites": true,
+                "anonymous": false,
+                "email-otp": true,
+                "magic-url": true,
+                "email-password": true
+            },
+            "security": {
+                "duration": 31536000,
+                "limit": 100,
+                "sessionsLimit": 10,
+                "passwordHistory": 0,
+                "passwordDictionary": false,
+                "personalDataCheck": false,
+                "sessionAlerts": false,
+                "mockNumbers": []
+            }
+        }
+    },
+    "tablesDB": [
+        {
+            "$id": "69066c0f000bf4ccf017",
+            "name": "Main",
+            "enabled": true
+        }
+    ],
+    "tables": [
+        {
+            "$id": "69066c0f000c2d9433bb",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "User",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "roles",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "elements": [
+                        "participant",
+                        "volunteer",
+                        "coordinator"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "currency",
+                    "type": "integer",
+                    "required": false,
+                    "array": false,
+                    "min": -9223372036854775808,
+                    "max": 9223372036854775807,
+                    "default": 0
+                },
+                {
+                    "key": "fraudStatus",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "clear",
+                        "suspicious",
+                        "confirmed"
+                    ],
+                    "format": "enum",
+                    "default": "clear"
+                },
+                {
+                    "key": "approved",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "approvalDocumentFile",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "birthDate",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "name",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "grantapplications",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "GrantApplication",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [],
+            "indexes": []
+        },
+        {
+            "$id": "volunteertasks",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "VolunteerTask",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "taskTitle",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 256,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "priority",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "high",
+                        "medium",
+                        "low"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "instructions",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "signatures",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "Signature",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "users",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "69066c0f000c2d9433bb",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "signatures",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "signatureFile",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "date",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "volunteerreport",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "VolunteerReport",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "totalHours",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1.7976931348623157e+308,
+                    "default": null
+                },
+                {
+                    "key": "reviewStatus",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "elements": [
+                        "approved",
+                        "denied",
+                        "under-review",
+                        "canceled"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "reviewerComments",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2048,
+                    "default": null,
+                    "encrypt": false
+                },
+                {
+                    "key": "reviewer",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "69066c0f000c2d9433bb",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "69225e3c0028d0e88357",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "volunteer",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedTable": "69066c0f000c2d9433bb",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "69225e6e0018c462cb6c",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "documents",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 20,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "shopitem",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "ShopItem",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "public",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "releaseOn",
+                    "type": "datetime",
+                    "required": false,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "interestsurveyresponse",
+            "$permissions": [],
+            "databaseId": "69066c0f000bf4ccf017",
+            "name": "InterestSurveyResponse",
+            "enabled": true,
+            "rowSecurity": false,
+            "columns": [
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "role",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "student",
+                        "educator",
+                        "parent",
+                        "other"
+                    ],
+                    "format": "enum",
+                    "default": "other"
+                },
+                {
+                    "key": "classes",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "remedial",
+                        "regular",
+                        "honors"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "gradYear",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "elements": [
+                        "2027",
+                        "2028",
+                        "2029",
+                        "2030",
+                        "other"
+                    ],
+                    "format": "enum",
+                    "default": null
+                },
+                {
+                    "key": "struggles",
+                    "type": "string",
+                    "required": false,
+                    "array": false,
+                    "size": 512,
+                    "default": null,
+                    "encrypt": false
+                }
+            ],
+            "indexes": []
+        }
+    ]
+}

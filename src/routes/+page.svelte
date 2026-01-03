@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Icon } from '@steeze-ui/svelte-icon';
 	import {
-		AcademicCap,
 		UserGroup,
 		Gift,
 		CurrencyDollar,
@@ -13,6 +12,16 @@
 	import lockInLogo from '$lib/assets/lock_in.svg';
 	import { slide } from 'svelte/transition';
 	import { enhance } from '$app/forms';
+	import Marquee from 'svelte-fast-marquee';
+	import Prize from '$lib/components/landingPage/Prize.svelte';
+	import batteryPrize from '$lib/assets/prizes/battery.webp';
+	import coffeePrize from '$lib/assets/prizes/coffee.webp';
+	import doordashPrize from '$lib/assets/prizes/doordash.webp';
+	import ledPrize from '$lib/assets/prizes/led.webp';
+	import notebookPrize from '$lib/assets/prizes/notebook.webp';
+	import pensPrize from '$lib/assets/prizes/pens.webp';
+	import steamPrize from '$lib/assets/prizes/steam.webp';
+	import testPrepPrize from '$lib/assets/prizes/test_prep.webp';
 
 	// --- Form State ---
 	let formData = $state({
@@ -44,13 +53,13 @@
 <!-- Layout Wrapper -->
 <div class="min-h-screen bg-indigo-50 font-sans dark:bg-surface-900">
 	<!-- Navigation -->
-	<nav class="sticky top-0 z-50 bg-white/70 shadow-md backdrop-blur-md dark:bg-surface-900/70">
+	<nav class="bg-white shadow-md dark:bg-surface-900">
 		<div class="container mx-auto flex items-center justify-between p-4">
 			<img src={lockInLogo} alt="Lock In Logo" class="h-12 w-auto" />
 			<a
 				href={donationLink}
 				target="_blank"
-				class="btn rounded-xl bg-rose-500 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-rose-600"
+				class="btn h-12 rounded-xl bg-rose-500 font-semibold text-white shadow-lg transition-all hover:scale-105 hover:bg-rose-600"
 			>
 				Donate Now
 			</a>
@@ -59,7 +68,7 @@
 
 	<!-- Hero Section -->
 	<header
-		class="relative container mx-auto flex flex-col items-center gap-8 px-4 py-20 text-center md:py-32"
+		class="relative container mx-auto flex flex-col items-center gap-8 px-4 pt-20 pb-8 text-center md:pt-32 md:pb-16"
 	>
 		<!-- Animated background orbs -->
 		<div
@@ -104,6 +113,29 @@
 			</div>
 		</div>
 	</header>
+
+	<!-- Prizes! -->
+	<section id="prizes" class="container mx-auto px-4 py-10">
+		<h2 class="mb-8 h2 font-bold text-center text-gray-900 dark:text-white">Study &rarr; Earn Prizes</h2>
+
+		<div class="rotate-[-2deg]">
+			<div class="bg-red-700/70 backdrop-blur p-4 rounded-lg shadow-lg">
+				<Marquee pauseOnHover={true} speed={40}>
+					<Prize imageSrc={pensPrize} imageAlt="10 multicolored pens" title="Pilot pens" hours={8}></Prize>
+					<Prize imageSrc={ledPrize} imageAlt="LED strip lights" title="LED Strip Lights" hours={10}></Prize>
+					<Prize imageSrc={coffeePrize} imageAlt="$10 Dunkin & Starbucks gift cards" title="$10 Coffee Gift Card" hours={12}></Prize>
+					<Prize imageSrc={testPrepPrize} imageAlt="Barron's AP test preparation materials" title="AP Test Prep" hours={15}></Prize>
+					<Prize imageSrc={steamPrize} imageAlt="$15 Steam gift card" title="$15 Steam Gift Card" hours={18}></Prize>
+					<Prize imageSrc={doordashPrize} imageAlt="$25 Doordash gift card" title="$25 Doordash Gift Card" hours={20}></Prize>
+					<Prize imageSrc={notebookPrize} imageAlt="Rocketbook reusable notebook" title="Rocketbook Notebook" hours={25}></Prize>
+					<Prize imageSrc={batteryPrize} imageAlt="Anker portable charger" title="Anker Portable Charger" hours={30}></Prize>
+				</Marquee>
+			</div>
+			<p class="text-sm text-gray-700 dark:text-gray-300 uppercase font-semibold">
+				Hours Studied estimated. Prizes subject to change.
+			</p>
+		</div>
+	</section>
 
 	<!-- Features Grid -->
 	<section id="about" class="container mx-auto px-4 py-20">
@@ -170,12 +202,11 @@
 				</div>
 			</div>
 			<div
-				class="mx-auto max-w-3xl card rounded-2xl border-4 border-green-300 bg-white p-8 shadow-xl dark:border-green-700 dark:bg-surface-800"
+				class="mx-auto max-w-3xl card rounded-2xl border-4 border-green-500 bg-white p-8 shadow-xl dark:border-green-700 dark:bg-surface-800"
 			>
 				<div class="flex items-start gap-4">
-					<Icon src={CheckCircle} class="h-10 w-10 shrink-0 text-green-500" />
 					<div class="text-left">
-						<h4 class="h4 font-bold text-gray-900 dark:text-white">Why 501(c)(3)?</h4>
+						<h4 class="h4 font-bold text-gray-900 dark:text-white">Is Lock In legit?</h4>
 						<p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
 							Lock In is fiscally sponsored by The Hack Foundation (d.b.a. Hack Club), a 501(c)(3)
 							nonprofit (EIN: 81-2908499). This means your donations are tax-deductible and our
@@ -196,8 +227,7 @@
 					Transparent Finances
 				</h2>
 				<p class="text-lg text-gray-700 dark:text-gray-300">
-					We believe non-profits should operate in the open. You can view every dollar raised and
-					spent in real-time on HCB.
+					All of Lock In's finances are publicly available on HCB.
 				</p>
 
 				<!-- Financial Stats Mockup -->
@@ -223,7 +253,7 @@
 						<div
 							class="mt-2 text-sm font-semibold tracking-wider text-indigo-700 uppercase dark:text-indigo-300"
 						>
-							Donors
+							Donations
 						</div>
 					</div>
 				</div>

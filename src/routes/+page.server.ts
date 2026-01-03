@@ -2,6 +2,7 @@ import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { createRow } from '$lib/server/database';
 import { appwriteConfig } from '$lib/server/appwriteConfig';
+import { HCAPTCHA_SECRET } from '$env/static/private';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -11,9 +12,34 @@ export const actions = {
 		const gradYear = data.get('gradYear');
 		const classes = data.get('classes');
 		const struggles = data.get('struggles');
+		const captchaToken = data.get('h-captcha-response');
 
 		// Validation errors object
 		const errors: Record<string, string> = {};
+
+		// Verify hCaptcha
+		if (!captchaToken || typeof captchaToken !== 'string') {
+			errors.captcha = 'Please complete the captcha verification';
+		} else {
+			try {
+					const verifyResponse = await fetch('https://hcaptcha.com/siteverify', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						body: `secret=${encodeURIComponent(HCAPTCHA_SECRET)}&response=${encodeURIComponent(captchaToken)}`
+					});
+
+					const verifyData = await verifyResponse.json();
+
+					if (!verifyData.success) {
+						errors.captcha = 'Captcha verification failed. Please try again.';
+					}
+			} catch (error) {
+				console.error('Error verifying captcha:', error);
+				errors.captcha = 'Failed to verify captcha. Please try again.';
+			}
+		}
 
 		// Validate email
 		if (!email || typeof email !== 'string') {
@@ -68,24 +94,25 @@ export const actions = {
 			});
 		}
 
-        try {
-            await createRow({
-                tableId: appwriteConfig.databases.main.tables.interestSurveryResponses,
-                data: {
-                    email: email as string,
-                    role: role as string,
-                    gradYear: gradYear as string | null,
-                    classes: classes as string | null,
-                    struggles: struggles as string | null
-                }
-            });
-        } catch (error) {
-            console.error('Error creating interest survey response:', error);
-            return fail(500, {
-                errors: { general: 'An error occurred while submitting your response. Please try again later.' },
-            });
-        }
-		
+		try {
+			await createRow({
+				tableId: appwriteConfig.databases.main.tables.interestSurveryResponses,
+				data: {
+					email: email as string,
+					role: role as string,
+					gradYear: gradYear as string | null,
+					classes: classes as string | null,
+					struggles: struggles as string | null
+				}
+			});
+		} catch (error) {
+			console.error('Error creating interest survey response:', error);
+			return fail(500, {
+				errors: {
+					general: 'An error occurred while submitting your response. Please try again later.'
+				}
+			});
+		}
 
 		// Return success
 		return {

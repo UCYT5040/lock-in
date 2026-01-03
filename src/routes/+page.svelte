@@ -39,6 +39,8 @@
 	});
 </script>
 
+<svelte:head><script src="https://js.hcaptcha.com/1/api.js" async defer></script></svelte:head>
+
 <!-- Layout Wrapper -->
 <div class="min-h-screen bg-indigo-50 font-sans dark:bg-surface-900">
 	<!-- Navigation -->
@@ -366,6 +368,13 @@
 								/>
 							</label>
 						{/if}
+
+						<div>
+							<div class="h-captcha" data-sitekey="9c305eb8-9e1e-4b14-83a6-0a7abe1468f2"></div>
+							{#if form?.errors?.captcha}
+								<p class="mt-2 text-sm text-red-600 dark:text-red-400">{form.errors.captcha}</p>
+							{/if}
+						</div>
 
 						<button
 							type="submit"

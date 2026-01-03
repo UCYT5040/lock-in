@@ -48,6 +48,7 @@
 	},
 	"dependencies": {
 		"@steeze-ui/svelte-icon": "^1.6.2",
-		"node-appwrite": "^20.2.1"
+		"node-appwrite": "^20.2.1",
+		"svelte-fast-marquee": "^1.0.2"
 	}
 }
